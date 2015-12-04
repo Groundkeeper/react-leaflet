@@ -72,11 +72,11 @@ This library uses React components as an interface, but not the virtual DOM, as 
 
 ### Helpers
 
-**setIconDefaultImagePath(path: string)**: Setter for `Leaflet.Icon.Default.imagePath`, set to `//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.5/images` by default.
+**setIconDefaultImagePath(path: string)**: Setter for `Leaflet.Icon.Default.imagePath`, set to `//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images` by default.
 
 ### PropTypes
 
-**latLng**: One of `[Number, Number]`, `{lat: Number, lng: Number}` or `{lat: Number, lon: Number}`.
+**latLng**: One of `[number, number]`, `{lat: number, lng: number}` or `{lat: number, lon: number}`.
 
 **latLngList**: An Array of *LatLng*.
 
@@ -112,19 +112,18 @@ It exposes a `getLeafletElement()` method to access the `Leaflet` object created
 
 ##### MapLayer
 
-Base class extending `MapComponent` using the provided `map` prop to add its element and passing it down to its children.
+Base class extending `MapComponent` using the provided `map` prop to add its element and passing it down to its children.  
+It exposes the following methods:
+- `getClonedChildrenWithMap(object extra): object`: returns the cloned children of the component, adding the `map` and the `extra` props provided to them.
+- `renderChildrenWithProps(object props): object`: returns the cloned children of the component using `getClonedChildrenWithMap()`, wrapped in a `<div>` with `display: none` style.
 
 ##### BaseTileLayer
 
 Base class extending `MapLayer` with a `render()` method and handling a TitleLayer `opacity` and `zIndex` props.
 
-##### PopupContainer
-
-Base class extending `MapLayer` with a `render()` method passing its `leafletElement` to its children as the `popupContainer` prop.
-
 ##### Path
 
-Base class extending `PopupContainer` with the following methods:
+Base class extending `MapLayer` with the following methods:
 - `getPathOptions(object props): object`: filters the input `props` and return a new object of [Path options](http://leafletjs.com/reference.html#path-options) properties.
 - `setStyle(object options = {}): void`: alias to the Leaflet element [`setStyle()`](http://leafletjs.com/reference.html#path-setstyle).
 - `setStyleIfChanged(object fromProps, object toProps): void`: extracts the Path options of the two arguments, and calls `setStyle()` with the new options if different from the previous ones.
@@ -219,12 +218,28 @@ All vector layers extend the **Path** component and therefore accept dynamic [Pa
 
 Use the `LayerGroup` wrapper component to group children layers together.
 
-##### Implemented but needing testing and documentation
+##### FeatureGroup
 
-- FeatureGroup
-- GeoJson
+Extended `LayerGroup` supporting a `Popup` child.
+
+##### GeoJson
+
+- `data: GeoJSON` (required)
 
 #### Controls
+
+##### AttributionControl
+
+- `position: controlPosition` (optional, dynamic)
+- `prefix: string` (optional)
+
+##### ScaleControl
+
+- `imperial: bool` (optional)
+- `position: controlPosition` (optional, dynamic)
+- `maxWidth: number` (optional)
+- `metric: bool` (optional)
+- `updateWhenIdle: bool` (optional)
 
 ##### ZoomControl
 
